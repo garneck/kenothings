@@ -16,6 +16,11 @@
     "plugins": [
       {
         "name": "next"
+      },
+      {
+        "transform": "typescript-plugin-styled-components",
+        "type": "config",
+        "ssr": true
       }
     ],
     "paths": {
