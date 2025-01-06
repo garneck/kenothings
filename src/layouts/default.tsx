@@ -18,13 +18,18 @@ const RootLayout = ({
         width={0}
         height={0}
       />
-      <div>{children}</div>
+      <Layout>{children}</Layout>
     </ThemeProvider>
   </>
 );
 
+const Layout = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
 const Background = styled(Image)`
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   z-index: -1;

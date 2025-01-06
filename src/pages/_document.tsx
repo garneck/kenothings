@@ -18,6 +18,12 @@ export default class MyDocument extends Document {
         ...initialProps,
         styles: (
           <>
+            <style>{`
+              #__next {
+                height: 100%;
+                width: 100%;
+              }
+            `}</style>
             {initialProps.styles}
             {sheet.getStyleElement()}
           </>
