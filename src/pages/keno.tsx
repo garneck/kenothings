@@ -5,18 +5,18 @@ import type { NextPageWithLayout } from "./_app";
 import Layout from "@/layouts/default";
 import KenoLayout from "@/layouts/keno";
 
-const Home: NextPageWithLayout = () => <HomeContainer>witam</HomeContainer>;
+const Keno: NextPageWithLayout = () => <KenoContainer>witam</KenoContainer>;
 
-Home.getLayout = (page: ReactElement) => (
+Keno.getLayout = (page: ReactElement) => (
   <Layout>
     <KenoLayout>{page}</KenoLayout>
   </Layout>
 );
 
-const HomeContainer = styled.div`
+const KenoContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-export default Home;
+export default Keno;
