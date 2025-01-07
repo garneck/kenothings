@@ -4,6 +4,7 @@ import styled from "styled-components";
 import type { NextPageWithLayout } from "@/pages/_app";
 import Layout from "@/layouts/default";
 import KenoLayout from "@/layouts/keno";
+import KenoListItem from "@/components/keno/listItem";
 import generateResults from "@/lib/generateResults";
 
 const Keno: NextPageWithLayout = () => {
@@ -31,9 +32,7 @@ const Keno: NextPageWithLayout = () => {
       <div>Random numbers</div>
       <ResultNumbersContainer>
         {resultNumbers.map((resultNumber, idx) => (
-          <ListItem suppressHydrationWarning key={`result-${idx}`}>
-            {resultNumber}
-          </ListItem>
+          <KenoListItem key={`result-${idx}`}>{resultNumber}</KenoListItem>
         ))}
       </ResultNumbersContainer>
     </KenoContainer>
@@ -54,6 +53,7 @@ const AllNumbersContainer = styled.ol`
 const ResultNumbersContainer = styled.ul`
   list-style-type: none;
   display: flex;
+  width: 50%;
 `;
 
 const ListItem = styled.li`
