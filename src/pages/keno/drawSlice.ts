@@ -58,7 +58,8 @@ export const drawSlice = createSlice({
       if (idx !== -1) {
         state.selectedValues.splice(idx, 1);
       } else {
-        state.selectedValues.push(action.payload);
+        if (state.selectedValues.length < 10)
+          state.selectedValues.push(action.payload);
       }
     },
     autoPick: (state) => {

@@ -1,5 +1,10 @@
+import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
+import { isAnyOf } from "@reduxjs/toolkit";
+
+import { listenerMiddleware } from "@/lib/store";
+import { generate, clear } from "@/pages/keno/drawSlice";
 
 type Stake = {
   label: string;
@@ -43,7 +48,23 @@ const Result: React.FC<Stake> = ({
 );
 
 const Results: React.FC = () => {
-  const currentHitAmount = 5;
+  const [currentHitAmount, setCurrentHitAmount] = useState<number>(0);
+
+  useEffect(() => {
+    const unsubscribe = listenerMiddleware.startListening({
+      matcher: isAnyOf(generate, clear),
+      effect: (action, listenerApi) => {
+        const state = listenerApi.getState();
+        const hitAmount = state.draw.value.filter((val: number) =>
+          state.draw.selectedValues.includes(val)
+        ).length;
+
+        setCurrentHitAmount(hitAmount);
+      },
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <ResultsContainer>

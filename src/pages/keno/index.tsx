@@ -14,6 +14,22 @@ import { useAppDispatch } from "@/lib/hooks";
 const Keno: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
   const handleDraw = () => dispatch(generate());
+
+  ///TODO USE THIS SOON
+  /*useEffect(() => {
+    const unsubscribe = listenerMiddleware.startListening({
+      actionCreator: generate,
+      effect: (action, listenerApi) =>
+        setCurrentVariant(
+          listenerApi.getState().draw.value.includes(value)
+            ? "highlighted"
+            : "default"
+        ),
+    });
+
+    return () => unsubscribe();
+  }, [value]);*/
+
   return (
     <>
       <MainContainer>

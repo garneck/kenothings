@@ -1,15 +1,9 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 
-import { listenerMiddleware } from "@/lib/store";
-import { generate, toggleValue } from "@/pages/keno/drawSlice";
+import { toggleValue } from "@/pages/keno/drawSlice";
 import { useAppDispatch } from "@/lib/hooks";
 
-interface ListItemProps {
-  value: number;
-}
-
-type KenoButtonVariant =
+export type KenoVariant =
   | "default"
   | "highlighted"
   | "loss"
@@ -17,28 +11,16 @@ type KenoButtonVariant =
   | "win_medium"
   | "win_hard";
 
-interface KenoButtonProps {
-  variant?: KenoButtonVariant;
+interface ListItemProps {
+  value: number;
+  variant: KenoVariant;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ value }) => {
-  const [currentVariant, setCurrentVariant] =
-    useState<KenoButtonProps["variant"]>("default");
+interface KenoButtonProps {
+  variant?: KenoVariant;
+}
 
-  useEffect(() => {
-    const unsubscribe = listenerMiddleware.startListening({
-      actionCreator: generate,
-      effect: (action, listenerApi) =>
-        setCurrentVariant(
-          listenerApi.getState().draw.value.includes(value)
-            ? "highlighted"
-            : "default"
-        ),
-    });
-
-    return () => unsubscribe();
-  }, [value]);
-
+const ListItem: React.FC<ListItemProps> = ({ value, variant }) => {
   const dispatch = useAppDispatch();
 
   const handleClick = (): void => {
@@ -46,7 +28,7 @@ const ListItem: React.FC<ListItemProps> = ({ value }) => {
   };
 
   return (
-    <KenoButton variant={currentVariant} onClick={handleClick}>
+    <KenoButton variant={variant} onClick={handleClick}>
       {value}
     </KenoButton>
   );
@@ -58,6 +40,7 @@ const KenoButton = styled.button<KenoButtonProps>`
   background: transparent;
   border: none;
   outline: none;
+  cursor: pointer;
 
   background-position: center;
   background-size: cover;
