@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 
 import KenoListItem from "./listItem";
-import type { RootState } from "@/lib/store";
+import { useAppSelector } from "@/lib/hooks";
 
 const KenoList: React.FC = () => {
-  const allValues = useSelector((state: RootState) => state.draw.allValues);
+  const allValues = useAppSelector((state) => state.draw.allValues);
   return (
     <KenoListContainer>
       {allValues.map((number: number, idx: number) => (

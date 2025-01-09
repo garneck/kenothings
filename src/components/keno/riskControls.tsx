@@ -1,19 +1,17 @@
 import styled from "styled-components";
 import Image from "next/image";
 import React from "react";
-import { useSelector } from "react-redux";
 
-import { useAppDispatch } from "@/lib/store";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { setRisk } from "@/pages/keno/drawSlice";
 import type { Risk } from "@/pages/keno/drawSlice";
-import type { RootState } from "@/lib/store";
 
 const FireImage: React.FC = () => (
   <Image src="/images/fire.svg" alt="fire" width={10} height={10} />
 );
 
 const RiskControls: React.FC = () => {
-  const currentRisk = useSelector((state: RootState) => state.draw.risk);
+  const currentRisk = useAppSelector((state) => state.draw.risk);
   const dispatch = useAppDispatch();
 
   const handleRiskClick = (risk: Risk): void => {

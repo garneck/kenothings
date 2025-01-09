@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
 import type { ReactElement } from "react";
 
 import Layout from "@/layouts/default";
@@ -10,9 +9,10 @@ import { generate } from "@/pages/keno/drawSlice";
 import type { NextPageWithLayout } from "@/pages/_app";
 import RiskControls from "@/components/keno/riskControls";
 import TableControls from "@/components/keno/tableControls";
+import { useAppDispatch } from "@/lib/hooks";
 
 const Keno: NextPageWithLayout = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleDraw = () => dispatch(generate());
   return (
     <>
