@@ -1,16 +1,28 @@
 import styled from "styled-components";
 import Image from "next/image";
+import { useAppDispatch } from "@/lib/hooks";
+import { clear, autoPick } from "@/pages/keno/drawSlice";
 
 const TableControls: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const handleClearTable = (): void => {
+    dispatch(clear());
+  };
+
+  const handleAutoPick = (): void => {
+    dispatch(autoPick());
+  };
+
   return (
     <TableControlsContainer>
-      <TableControlsButton>
+      <TableControlsButton onClick={handleAutoPick}>
         <TableControlsButtonElement>
           <Image src="/images/dice.svg" alt="dice" width={24} height={24} />
         </TableControlsButtonElement>
         <TableControlsButtonElement>auto pick</TableControlsButtonElement>
       </TableControlsButton>
-      <TableControlsButton>
+      <TableControlsButton onClick={handleClearTable}>
         <TableControlsButtonElement>
           <Image src="/images/clear.svg" alt="clear" width={16} height={16} />
         </TableControlsButtonElement>
