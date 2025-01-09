@@ -5,7 +5,7 @@ import type { ReactElement } from "react";
 import Layout from "@/layouts/default";
 import KenoLayout from "@/layouts/keno";
 import KenoList from "@/components/keno/list";
-import KenoStakesControls from "@/components/keno/stakesControls";
+import Results from "@/components/keno/results";
 import { generate } from "@/pages/keno/drawSlice";
 import type { NextPageWithLayout } from "@/pages/_app";
 import RiskControls from "@/components/keno/riskControls";
@@ -24,7 +24,7 @@ const Keno: NextPageWithLayout = () => {
         <Divider />
         <KenoContainer>
           <KenoList />
-          <KenoStakesControls />
+          <Results />
         </KenoContainer>
       </MainContainer>
       <DrawButton onClick={handleDraw}>draw</DrawButton>
