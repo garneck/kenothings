@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { listenerMiddleware } from "@/lib/store";
 import { generate, toggleValue } from "@/pages/keno/drawSlice";
-import { useAppDispatch } from "@/lib/store";
+import { useAppDispatch } from "@/lib/hooks";
 
 interface ListItemProps {
   value: number;
