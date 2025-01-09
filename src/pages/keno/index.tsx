@@ -5,17 +5,28 @@ import type { ReactElement } from "react";
 import Layout from "@/layouts/default";
 import KenoLayout from "@/layouts/keno";
 import KenoList from "@/components/keno/list";
+import KenoStakesControls from "@/components/keno/stakesControls";
 import { generate } from "@/pages/keno/drawSlice";
 import type { NextPageWithLayout } from "@/pages/_app";
+import RiskControls from "@/components/keno/riskControls";
+import TableControls from "@/components/keno/tableControls";
 
 const Keno: NextPageWithLayout = () => {
   const dispatch = useDispatch();
   const handleDraw = () => dispatch(generate());
   return (
     <>
-      <KenoContainer>
-        <KenoList />
-      </KenoContainer>
+      <MainContainer>
+        <TableControlsContainer>
+          <RiskControls />
+          <TableControls />
+        </TableControlsContainer>
+        <Divider />
+        <KenoContainer>
+          <KenoList />
+          <KenoStakesControls />
+        </KenoContainer>
+      </MainContainer>
       <DrawButton onClick={handleDraw}>draw</DrawButton>
     </>
   );
@@ -27,15 +38,14 @@ Keno.getLayout = (page: ReactElement) => (
   </Layout>
 );
 
-const KenoContainer = styled.div`
+const MainContainer = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-
   border: 1px solid #2f4566;
   border-radius: 12px;
   padding: 16px;
+  gap: 16px;
 
   background: linear-gradient(
     180deg,
@@ -43,6 +53,29 @@ const KenoContainer = styled.div`
     rgba(9, 14, 21, 0.35) 100%
   );
   backdrop-filter: blur(4px);
+`;
+
+const Divider = styled.div`
+  width: 1px;
+  height: 100%;
+  opacity: 0.3;
+  background: linear-gradient(180deg, #2f4566 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 2px;
+`;
+
+const KenoContainer = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+`;
+
+const TableControlsContainer = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 24px;
+  height: 100%;
 `;
 
 const DrawButton = styled.button`

@@ -9,7 +9,13 @@ interface ListItemProps {
   value: number;
 }
 
-type KenoButtonVariant = "default" | "loss" | "win" | "win_medium" | "win_hard";
+type KenoButtonVariant =
+  | "default"
+  | "highlighted"
+  | "loss"
+  | "win"
+  | "win_medium"
+  | "win_hard";
 
 interface KenoButtonProps {
   variant?: KenoButtonVariant;
@@ -25,7 +31,7 @@ const ListItem: React.FC<ListItemProps> = ({ value }) => {
       effect: (action, listenerApi) =>
         setCurrentVariant(
           listenerApi.getState().draw.value.includes(value)
-            ? "win_hard"
+            ? "highlighted"
             : "default"
         ),
     });
@@ -49,28 +55,29 @@ const ListItem: React.FC<ListItemProps> = ({ value }) => {
 const KenoButton = styled.button<KenoButtonProps>`
   width: 100%;
   padding: 16px;
-  border-radius: 8px;
+  background: transparent;
+  border: none;
+  outline: none;
 
-  background: ${({ variant }) => {
-    switch (variant) {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: ${(props) => {
+    switch (props.variant) {
+      case "highlighted":
+        return props.theme.buttonBackgrounds.default.selected;
+      case "loss":
+        return props.theme.buttonBackgrounds.loss;
+      case "win":
+        return props.theme.buttonBackgrounds.win.base;
+      case "win_medium":
+        return props.theme.buttonBackgrounds.win.medium;
       case "win_hard":
-        return "green";
+        return props.theme.buttonBackgrounds.win.hard;
       default:
-        return "grey";
+        return props.theme.buttonBackgrounds.default.base;
     }
   }};
-
-  &:hover {
-    background: blue;
-  }
-
-  &:active {
-    background: green;
-  }
-
-  &:focus {
-    background: red;
-  }
 `;
 
 export default ListItem;
