@@ -1,35 +1,61 @@
 import styled from "styled-components";
 import Image from "next/image";
 import React from "react";
+import { useSelector } from "react-redux";
+
+import { useAppDispatch } from "@/lib/store";
+import { setRisk } from "@/pages/keno/drawSlice";
+import type { Risk } from "@/pages/keno/drawSlice";
+import type { RootState } from "@/lib/store";
 
 const FireImage: React.FC = () => (
   <Image src="/images/fire.svg" alt="fire" width={10} height={10} />
 );
+
 const RiskControls: React.FC = () => {
+  const currentRisk = useSelector((state: RootState) => state.draw.risk);
+  const dispatch = useAppDispatch();
+
+  const handleRiskClick = (risk: Risk): void => {
+    dispatch(setRisk(risk));
+  };
+
   return (
     <RiskContainer>
       <RiskSelectorTitle>risk</RiskSelectorTitle>
-      <RiskSelectorItem>
+      <RiskSelector
+        risk="low"
+        active={currentRisk === "low"}
+        onClick={() => handleRiskClick("low")}
+      >
         <FireWrapper>
           <FireImage />
         </FireWrapper>
         <div>low</div>
-      </RiskSelectorItem>
-      <RiskSelectorItem>
+      </RiskSelector>
+      <RiskSelector
+        risk="medium"
+        active={currentRisk === "medium"}
+        onClick={() => handleRiskClick("medium")}
+      >
         <FireWrapper>
           <FireImage />
           <FireImage />
         </FireWrapper>
         <div>medium</div>
-      </RiskSelectorItem>
-      <RiskSelectorItem>
+      </RiskSelector>
+      <RiskSelector
+        risk="high"
+        active={currentRisk === "high"}
+        onClick={() => handleRiskClick("high")}
+      >
         <FireWrapper>
           <FireImage />
           <FireImage />
           <FireImage />
         </FireWrapper>
         <div>high</div>
-      </RiskSelectorItem>
+      </RiskSelector>
     </RiskContainer>
   );
 };
@@ -50,12 +76,19 @@ const RiskSelectorTitle = styled.div`
   font-size: 12px;
 `;
 
-const RiskSelectorItem = styled.button`
+interface RiskSelectorProps {
+  risk: Risk;
+  active: boolean;
+}
+
+const RiskSelector = styled.button<RiskSelectorProps>`
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   text-transform: capitalize;
+  cursor: pointer;
+  user-select: none;
 
   background: transparent;
   background-image: ${(props) => props.theme.buttonBackgrounds.risk};

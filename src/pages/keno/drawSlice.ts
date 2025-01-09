@@ -3,6 +3,21 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import generateResults from "@/lib/generateResults";
 
+const generateUniqueNumbers = (
+  count: number,
+  min: number,
+  max: number
+): number[] => {
+  const numbers = new Set<number>();
+
+  while (numbers.size < count) {
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    numbers.add(randomNumber);
+  }
+
+  return Array.from(numbers);
+};
+
 const getNewResults = (): Array<number> =>
   generateResults(
     process.env.SERVER_SEED ?? "",
@@ -11,10 +26,13 @@ const getNewResults = (): Array<number> =>
     10
   );
 
+export type Risk = "low" | "medium" | "high";
+
 export interface DrawSlice {
   value: Array<number>;
   selectedValues: Array<number>;
   allValues: Array<number>;
+  risk: Risk;
 }
 
 const initialState: DrawSlice = {
@@ -25,6 +43,7 @@ const initialState: DrawSlice = {
   ],
   selectedValues: [],
   value: [],
+  risk: "low",
 };
 
 export const drawSlice = createSlice({
@@ -42,9 +61,19 @@ export const drawSlice = createSlice({
         state.selectedValues.push(action.payload);
       }
     },
+    autoPick: (state) => {
+      state.selectedValues = generateUniqueNumbers(10, 1, 40);
+    },
+    clear: () => {
+      return initialState;
+    },
+    setRisk: (state, action: PayloadAction<Risk>) => {
+      state.risk = action.payload;
+    },
   },
 });
 
-export const { generate, toggleValue } = drawSlice.actions;
+export const { generate, toggleValue, clear, autoPick, setRisk } =
+  drawSlice.actions;
 
 export default drawSlice;
