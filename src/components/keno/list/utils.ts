@@ -30,10 +30,11 @@ const getVariant = (
   selectedValues: number[],
   winningValues: number[]
 ): KenoVariant => {
-  if (winningValues.length > 0 && selectedValues.includes(currentValue)) {
-    return winningValues.includes(currentValue) ? "win" : "highlighted";
+  if (winningValues.length > 0 && winningValues.includes(currentValue)) {
+    if (selectedValues.includes(currentValue)) return "win";
+    return "loss";
   }
-  if (winningValues.includes(currentValue)) return "loss";
+  if (selectedValues.includes(currentValue)) return "highlighted";
   return "default";
 };
 
