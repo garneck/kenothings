@@ -17,7 +17,7 @@ const useAnimations = (
 
   useEffect(() => {
     const unsubscribe = startAppListening({
-      matcher: isAnyOf(generate, autoPick),
+      actionCreator: generate,
       effect: (action, listenerApi) => {
         const newValues = listenerApi.getState().draw.value;
         const newSelectedValues = listenerApi.getState().draw.selectedValues;
@@ -44,6 +44,33 @@ const useAnimations = (
     });
     return () => unsubscribe();
   }, [refs, winningValues]);
+
+  useEffect(() => {
+    const unsubscribe = startAppListening({
+      actionCreator: autoPick,
+      effect: (action, listenerApi) => {
+        const newSelectedValues = listenerApi.getState().draw.selectedValues;
+        setRefs(
+          refs.map((ref, idx) => {
+            ref.update({
+              to: {
+                backgroundImage: getBackground(
+                  getVariant(idx + 1, newSelectedValues, winningValues)
+                ),
+              },
+            });
+            return ref;
+          })
+        );
+        setRefsToAnimate(
+          Array.from(new Set([...selectedValues, ...newSelectedValues]))
+            .sort((a, b) => a - b)
+            .map((id) => refs[id - 1])
+        );
+      },
+    });
+    return () => unsubscribe();
+  }, [refs, winningValues, selectedValues]);
 
   useEffect(() => {
     const unsubscribe = startAppListening({

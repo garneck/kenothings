@@ -18,7 +18,7 @@ const TableControls: React.FC = () => {
     <TableControlsContainer>
       <TableControlsButton onClick={handleAutoPick}>
         <TableControlsButtonElement>
-          <Image src="/images/dice.svg" alt="dice" width={24} height={24} />
+          <Dice src="/images/dice.svg" alt="dice" width={24} height={24} />
         </TableControlsButtonElement>
         <TableControlsButtonElement>auto pick</TableControlsButtonElement>
       </TableControlsButton>
@@ -36,14 +36,23 @@ const TableControlsContainer = styled.div`
   display: flex;
   flex-flow: column nowrap;
   gap: 4px;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Dice = styled(Image)`
+  margin-bottom: -8px;
 `;
 
 const TableControlsButton = styled.button`
   cursor: pointer;
-  padding: 8px;
+  padding: 4px 8px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  width: 100%;
 
   background: transparent;
   background-image: ${(props) => props.theme.buttonBackgrounds.risk};
@@ -55,9 +64,12 @@ const TableControlsButton = styled.button`
   outline: none;
 `;
 
-const TableControlsButtonElement = styled.span`
+const TableControlsButtonElement = styled.div`
   text-transform: capitalize;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default TableControls;
