@@ -12,7 +12,10 @@ const buttonBackgrounds = {
     hard: `url("/images/keno/btn-win-hard.svg")`,
   },
   risk: `url("/images/risk/btn-default.svg")`,
-  table: `url("/images/table/btn-default.svg")`,
+  table: {
+    base: `url("/images/table/btn-default.svg")`,
+    active: `url("/images/table/btn-active.svg")`,
+  },
 };
 
 export default buttonBackgrounds;

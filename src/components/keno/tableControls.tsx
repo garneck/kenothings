@@ -16,18 +16,18 @@ const TableControls: React.FC = () => {
 
   return (
     <TableControlsContainer>
-      <TableControlsButton onClick={handleAutoPick}>
+      <AutoPickButton onClick={handleAutoPick}>
         <TableControlsButtonElement>
           <Dice src="/images/dice.svg" alt="dice" width={24} height={24} />
         </TableControlsButtonElement>
         <TableControlsButtonElement>auto pick</TableControlsButtonElement>
-      </TableControlsButton>
-      <TableControlsButton onClick={handleClearTable}>
+      </AutoPickButton>
+      <ClearButton onClick={handleClearTable}>
         <TableControlsButtonElement>
           <Image src="/images/clear.svg" alt="clear" width={16} height={16} />
         </TableControlsButtonElement>
         <TableControlsButtonElement>clear table</TableControlsButtonElement>
-      </TableControlsButton>
+      </ClearButton>
     </TableControlsContainer>
   );
 };
@@ -35,7 +35,6 @@ const TableControls: React.FC = () => {
 const TableControlsContainer = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  gap: 4px;
   height: 100%;
   width: 100%;
   align-items: center;
@@ -48,20 +47,34 @@ const Dice = styled(Image)`
 
 const TableControlsButton = styled.button`
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 24px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   width: 100%;
+  gap: 8px;
 
   background: transparent;
-  background-image: ${(props) => props.theme.buttonBackgrounds.risk};
-  background-position: center;
-  background-size: cover;
+  background-image: ${(props) => props.theme.buttonBackgrounds.table};
+  background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
   border: none;
   border-radius: 4px;
   outline: none;
+
+  &:hover {
+    transition: filter 0.3s ease;
+    filter: brightness(1.5);
+  }
+`;
+
+const AutoPickButton = styled(TableControlsButton)`
+  background-image: ${(props) => props.theme.buttonBackgrounds.table.active};
+`;
+
+const ClearButton = styled(TableControlsButton)`
+  background-image: ${(props) => props.theme.buttonBackgrounds.table.base};
 `;
 
 const TableControlsButtonElement = styled.div`
