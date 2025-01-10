@@ -62,9 +62,14 @@ const RiskContainer = styled.div`
   display: flex;
   width: 100%;
   flex-flow: column nowrap;
-  align-items: stretch;
-  justify-content: center;
   padding: 0;
+  gap: 4px;
+
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const RiskSelectorTitle = styled.div`
@@ -72,9 +77,17 @@ const RiskSelectorTitle = styled.div`
   align-self: center;
   color: #8392aa;
   font-size: 12px;
+
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    display: none;
+  }
 `;
 
-const RiskSelectorLabel = styled.div``;
+const RiskSelectorLabel = styled.div`
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    font-size: 12px;
+  }
+`;
 
 const FireWrapper = styled.div`
   display: flex;
@@ -124,6 +137,10 @@ const RiskSelector = styled.button<RiskSelectorProps>`
   background-repeat: no-repeat;
   border: none;
   outline: none;
+
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    flex: 1;
+  }
 `;
 
 export default RiskControls;

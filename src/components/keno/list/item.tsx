@@ -67,6 +67,10 @@ const KenoButton = styled(animated.button)<KenoButtonProps>`
   background-size: cover;
   background-repeat: no-repeat;
   transition: background-image 150ms ease-in-out;
+
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    padding: 4px;
+  }
 `;
 
 export default ListItem;

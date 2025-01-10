@@ -14,22 +14,6 @@ import { useAppDispatch } from "@/lib/hooks";
 const Keno: NextPageWithLayout = () => {
   const dispatch = useAppDispatch();
   const handleDraw = () => dispatch(generate());
-
-  ///TODO USE THIS SOON
-  /*useEffect(() => {
-    const unsubscribe = listenerMiddleware.startListening({
-      actionCreator: generate,
-      effect: (action, listenerApi) =>
-        setCurrentVariant(
-          listenerApi.getState().draw.value.includes(value)
-            ? "highlighted"
-            : "default"
-        ),
-    });
-
-    return () => unsubscribe();
-  }, [value]);*/
-
   return (
     <>
       <MainContainer>
@@ -69,6 +53,12 @@ const MainContainer = styled.div`
     rgba(9, 14, 21, 0.35) 100%
   );
   backdrop-filter: blur(4px);
+
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    flex-flow: column-reverse nowrap;
+    padding: 8px;
+    gap: 0;
+  }
 `;
 
 const Divider = styled.div`
@@ -92,6 +82,10 @@ const TableControlsContainer = styled.div`
   flex-flow: column nowrap;
   gap: 24px;
   height: 100%;
+  width: 100%;
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    gap: 0;
+  }
 `;
 
 const DrawButton = styled.button`

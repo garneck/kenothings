@@ -35,10 +35,12 @@ const TableControls: React.FC = () => {
 const TableControlsContainer = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  height: 100%;
-  width: 100%;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    flex-flow: row nowrap;
+  }
 `;
 
 const Dice = styled(Image)`
@@ -51,8 +53,8 @@ const TableControlsButton = styled.button`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  width: 100%;
   gap: 8px;
+  width: 100%;
 
   background: transparent;
   background-image: ${(props) => props.theme.buttonBackgrounds.table};
@@ -66,6 +68,9 @@ const TableControlsButton = styled.button`
   &:hover {
     transition: filter 0.3s ease;
     filter: brightness(1.5);
+  }
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    width: auto;
   }
 `;
 
@@ -83,6 +88,9 @@ const TableControlsButtonElement = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    font-size: 12px;
+  }
 `;
 
 export default TableControls;

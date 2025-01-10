@@ -37,11 +37,7 @@ export interface DrawSlice {
 }
 
 const initialState: DrawSlice = {
-  allValues: [
-    ...Array(40)
-      .keys()
-      .map((v) => v + 1),
-  ],
+  allValues: [...Array(40).keys()].map((v) => v + 1),
   selectedValues: [],
   value: [],
   hits: 0,
@@ -61,12 +57,17 @@ export const drawSlice = createSlice({
       if (idx !== -1) {
         state.selectedValues.splice(idx, 1);
       } else {
-        if (state.selectedValues.length < 10)
-          state.selectedValues.push(action.payload);
+        if (state.selectedValues.length < 10) {
+        }
+        state.selectedValues.push(action.payload);
       }
+      state.value = [];
+      state.hits = 0;
     },
     autoPick: (state) => {
       state.selectedValues = generateUniqueNumbers(10, 1, 40);
+      state.value = [];
+      state.hits = 0;
     },
     clear: (state) => {
       state.selectedValues = [];

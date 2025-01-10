@@ -65,12 +65,21 @@ const ResultsContainer = styled.div`
   padding: 8px;
   border: 3px solid #326dcb;
   gap: 4px;
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    gap: 2px;
+    padding: 2px;
+  }
 `;
 
 const ResultMultiplier = styled.div`
   background: #222f42;
   text-align: center;
   padding: 4px;
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    gap: 2px;
+    padding: 2px;
+    font-size: 8px;
+  }
 `;
 
 const ResultHitAmount = styled.div`
@@ -81,6 +90,10 @@ const ResultHitAmount = styled.div`
   align-items: baseline;
   justify-content: center;
   gap: 2px;
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    gap: 2px;
+    font-size: 8px;
+  }
 `;
 
 const DiamondImage = styled(Image)``;

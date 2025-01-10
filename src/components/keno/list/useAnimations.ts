@@ -68,12 +68,16 @@ const useAnimations = (
           refs.map((ref, idx) =>
             updateBackground(
               ref,
-              getVariant(idx + 1, newSelectedValues, winningValues, risk)
+              getVariant(idx + 1, newSelectedValues, [], risk)
             )
           )
         );
         setRefsToAnimate(
-          getUniqueSubsetOfRefs(refs, [...selectedValues, ...newSelectedValues])
+          getUniqueSubsetOfRefs(refs, [
+            ...selectedValues,
+            ...newSelectedValues,
+            ...winningValues,
+          ])
         );
       },
     });
@@ -125,6 +129,12 @@ const useAnimations = (
     const unsubscribe = startAppListening({
       actionCreator: toggleValue,
       effect: (action, listenerApi) => {
+        setRefs(
+          refs.map((ref, idx) =>
+            updateBackground(ref, getVariant(idx + 1, selectedValues, [], risk))
+          )
+        );
+        setRefsToAnimate(getUniqueSubsetOfRefs(refs, [...selectedValues]));
         refs[action.payload - 1].update({
           to: {
             backgroundImage: getBackground(
@@ -137,11 +147,17 @@ const useAnimations = (
             ),
           },
         });
-        setRefsToAnimate([refs[action.payload - 1]]);
+        setRefsToAnimate([
+          refs[action.payload - 1],
+          ...getUniqueSubsetOfRefs(refs, [
+            action.payload - 1,
+            ...winningValues,
+          ]),
+        ]);
       },
     });
     return () => unsubscribe();
-  }, [refs, risk]);
+  }, [refs, winningValues, selectedValues, risk]);
 
   useChain(
     refsToAnimate,

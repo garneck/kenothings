@@ -34,6 +34,9 @@ const KenoListContainer = styled.ul`
   padding: 0;
   margin: 0;
   grid-template-columns: repeat(10, 1fr);
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    grid-gap: 2px;
+  }
 `;
 
 export default KenoList;

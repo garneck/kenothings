@@ -1,3 +1,5 @@
+import { createStyledBreakpointsTheme } from "styled-breakpoints";
+
 import colors from "./colors";
 import buttonBackgrounds from "./buttonBackgrounds";
 
@@ -6,4 +8,6 @@ const defaultTheme = {
   buttonBackgrounds,
 };
 
-export default defaultTheme;
+const theme = { ...defaultTheme, ...createStyledBreakpointsTheme() };
+
+export default theme;
