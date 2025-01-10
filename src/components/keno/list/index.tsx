@@ -1,76 +1,16 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 
 import { useAppSelector } from "@/lib/hooks";
-import { startAppListening } from "@/lib/store";
-import { generate, toggleValue } from "@/pages/keno/drawSlice";
 import KenoListItem from "./item";
-import { getVariant, getBackground } from "./utils";
-import { SpringRef, useChain } from "@react-spring/web";
+import { getVariant } from "./utils";
+import { useAnimations } from "./useAnimations";
 
 const KenoList: React.FC = () => {
   const allValues = useAppSelector((state) => state.draw.allValues);
   const selectedValues = useAppSelector((state) => state.draw.selectedValues);
   const winningValues = useAppSelector((state) => state.draw.value);
 
-  const [refs, setRefs] = useState(
-    Array.from({ length: 40 }, () => SpringRef())
-  );
-
-  const refsToAnimate = Array.from(
-    new Set([...winningValues, ...selectedValues])
-  )
-    .sort((a, b) => a - b)
-    .map((id) => refs[id - 1]);
-
-  useEffect(() => {
-    const unsubscribe = startAppListening({
-      actionCreator: generate,
-      effect: (action, listenerApi) => {
-        const newValues = listenerApi.getState().draw.value;
-        const selectedValues = listenerApi.getState().draw.selectedValues;
-        setRefs(
-          refs.map((ref, idx) => {
-            ref.update({
-              to: {
-                backgroundImage: getBackground(
-                  getVariant(idx + 1, selectedValues, newValues)
-                ),
-              },
-            });
-            return ref;
-          })
-        );
-      },
-    });
-    return () => unsubscribe();
-  }, [refs]);
-
-  useEffect(() => {
-    const unsubscribe = startAppListening({
-      actionCreator: toggleValue,
-      effect: (action, listenerApi) => {
-        refs[action.payload - 1].start({
-          to: {
-            backgroundImage: getBackground(
-              getVariant(
-                action.payload,
-                listenerApi.getState().draw.selectedValues,
-                listenerApi.getState().draw.value
-              )
-            ),
-          },
-        });
-      },
-    });
-    return () => unsubscribe();
-  }, [refs]);
-
-  useChain(
-    refsToAnimate,
-    refsToAnimate.map((x, idx) => idx),
-    50
-  );
+  const { refs } = useAnimations(winningValues, selectedValues);
 
   return (
     <KenoListContainer>

@@ -5,6 +5,7 @@ import { isAnyOf } from "@reduxjs/toolkit";
 
 import { startAppListening } from "@/lib/store";
 import { generate, clear } from "@/pages/keno/drawSlice";
+import { useAppSelector } from "@/lib/hooks";
 
 type Stake = {
   label: string;
@@ -48,23 +49,7 @@ const Result: React.FC<Stake> = ({
 );
 
 const Results: React.FC = () => {
-  const [currentHitAmount, setCurrentHitAmount] = useState<number>(0);
-
-  useEffect(() => {
-    const unsubscribe = startAppListening({
-      matcher: isAnyOf(generate, clear),
-      effect: (action, listenerApi) => {
-        const state = listenerApi.getState();
-        const hitAmount = state.draw.value.filter((val: number) =>
-          state.draw.selectedValues.includes(val)
-        ).length;
-
-        setCurrentHitAmount(hitAmount);
-      },
-    });
-
-    return () => unsubscribe();
-  }, []);
+  const hits = useAppSelector((state) => state.draw.hits);
 
   return (
     <ResultsContainer>
@@ -74,7 +59,7 @@ const Results: React.FC = () => {
           label={label}
           hitAmount={hitAmount}
           multiplier={multiplier}
-          selected={currentHitAmount === hitAmount}
+          selected={hits === hitAmount}
         />
       ))}
     </ResultsContainer>

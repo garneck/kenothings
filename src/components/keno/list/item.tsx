@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useSpring, animated, SpringRef } from "@react-spring/web";
 
 import { getBackground } from "@/components/keno/list/utils";
-import { toggleValue } from "@/pages/keno/drawSlice";
+import { toggleValue, incrementHits } from "@/pages/keno/drawSlice";
 import { useAppDispatch } from "@/lib/hooks";
 import type { KenoVariant } from "./utils";
 
@@ -23,7 +23,16 @@ const ListItem: React.FC<ListItemProps> = ({ value, springRef }) => {
   const [style] = useSpring(() => ({
     ref: springRef,
     from: { backgroundImage: getBackground("default") },
-    onStart: (x) => console.log(x),
+    onStart: (x) => {
+      if (
+        [
+          getBackground("win"),
+          getBackground("win_medium"),
+          getBackground("win_hard"),
+        ].includes(x.value.backgroundImage)
+      )
+        dispatch(incrementHits());
+    },
   }));
 
   const handleClick = (): void => {

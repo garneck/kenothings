@@ -33,6 +33,7 @@ export interface DrawSlice {
   selectedValues: Array<number>;
   allValues: Array<number>;
   risk: Risk;
+  hits: number;
 }
 
 const initialState: DrawSlice = {
@@ -43,6 +44,7 @@ const initialState: DrawSlice = {
   ],
   selectedValues: [],
   value: [],
+  hits: 0,
   risk: "low",
 };
 
@@ -51,6 +53,7 @@ export const drawSlice = createSlice({
   initialState,
   reducers: {
     generate: (state) => {
+      state.hits = 0;
       state.value = getNewResults();
     },
     toggleValue: (state, action: PayloadAction<number>) => {
@@ -65,16 +68,26 @@ export const drawSlice = createSlice({
     autoPick: (state) => {
       state.selectedValues = generateUniqueNumbers(10, 1, 40);
     },
-    clear: () => {
-      return initialState;
+    clear: (state) => {
+      state.selectedValues = [];
+      state.hits = 0;
     },
     setRisk: (state, action: PayloadAction<Risk>) => {
       state.risk = action.payload;
     },
+    incrementHits: (state) => {
+      state.hits += 1;
+    },
   },
 });
 
-export const { generate, toggleValue, clear, autoPick, setRisk } =
-  drawSlice.actions;
+export const {
+  generate,
+  toggleValue,
+  clear,
+  autoPick,
+  setRisk,
+  incrementHits,
+} = drawSlice.actions;
 
 export default drawSlice;
