@@ -111,6 +111,14 @@ const RiskSelector = styled.button<RiskSelectorProps>`
     props.active
       ? props.theme.buttonBackgrounds.risk[props.risk]
       : props.theme.buttonBackgrounds.risk.base};
+  &:hover {
+    ${(props) =>
+      !props.active &&
+      css`
+        transition: filter 0.3s ease;
+        filter: brightness(1.5);
+      `}
+  }
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;

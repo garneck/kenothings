@@ -20,7 +20,7 @@ const KenoList: React.FC = () => {
           key={`number-${idx}`}
           value={number}
           springRef={refs[idx]}
-          variant={getVariant(number, selectedValues, winningValues)}
+          variant={getVariant(number, selectedValues, winningValues, risk)}
         />
       ))}
     </KenoListContainer>

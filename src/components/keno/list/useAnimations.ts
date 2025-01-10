@@ -146,7 +146,7 @@ const useAnimations = (
   useChain(
     refsToAnimate,
     refsToAnimate.map((x, idx) => idx),
-    200
+    100
   );
 
   return {

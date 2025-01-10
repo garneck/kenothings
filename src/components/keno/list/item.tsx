@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useSpring, animated, SpringRef } from "@react-spring/web";
 
 import { getBackground } from "@/components/keno/list/utils";
@@ -14,10 +14,11 @@ interface ListItemProps {
 
 interface KenoButtonProps {
   children: React.ReactNode;
+  variant: KenoVariant;
   onClick: VoidFunction;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ value, springRef }) => {
+const ListItem: React.FC<ListItemProps> = ({ value, variant, springRef }) => {
   const dispatch = useAppDispatch();
 
   const [style] = useSpring(() => ({
@@ -40,7 +41,7 @@ const ListItem: React.FC<ListItemProps> = ({ value, springRef }) => {
   };
 
   return (
-    <KenoButton style={style} onClick={handleClick}>
+    <KenoButton style={style} variant={variant} onClick={handleClick}>
       {value}
     </KenoButton>
   );
@@ -54,6 +55,14 @@ const KenoButton = styled(animated.button)<KenoButtonProps>`
   outline: none;
   cursor: pointer;
 
+  &:hover {
+    ${(props) =>
+      props.variant === "default" &&
+      css`
+        transition: filter 0.3s ease;
+        filter: brightness(1.5);
+      `}
+  }
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
