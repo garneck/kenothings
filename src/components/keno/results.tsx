@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import Image from "next/image";
 import { isAnyOf } from "@reduxjs/toolkit";
 
-import { listenerMiddleware } from "@/lib/store";
+import { startAppListening } from "@/lib/store";
 import { generate, clear } from "@/pages/keno/drawSlice";
 
 type Stake = {
@@ -51,7 +51,7 @@ const Results: React.FC = () => {
   const [currentHitAmount, setCurrentHitAmount] = useState<number>(0);
 
   useEffect(() => {
-    const unsubscribe = listenerMiddleware.startListening({
+    const unsubscribe = startAppListening({
       matcher: isAnyOf(generate, clear),
       effect: (action, listenerApi) => {
         const state = listenerApi.getState();

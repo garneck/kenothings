@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 import { useAppSelector } from "@/lib/hooks";
-import { listenerMiddleware } from "@/lib/store";
+import { startAppListening } from "@/lib/store";
 import { generate, toggleValue } from "@/pages/keno/drawSlice";
 import KenoListItem from "./item";
 import { getVariant, getBackground } from "./utils";
@@ -17,8 +17,14 @@ const KenoList: React.FC = () => {
     Array.from({ length: 40 }, () => SpringRef())
   );
 
+  const refsToAnimate = Array.from(
+    new Set([...winningValues, ...selectedValues])
+  )
+    .sort((a, b) => a - b)
+    .map((id) => refs[id - 1]);
+
   useEffect(() => {
-    const unsubscribe = listenerMiddleware.startListening({
+    const unsubscribe = startAppListening({
       actionCreator: generate,
       effect: (action, listenerApi) => {
         const newValues = listenerApi.getState().draw.value;
@@ -41,7 +47,7 @@ const KenoList: React.FC = () => {
   }, [refs]);
 
   useEffect(() => {
-    const unsubscribe = listenerMiddleware.startListening({
+    const unsubscribe = startAppListening({
       actionCreator: toggleValue,
       effect: (action, listenerApi) => {
         refs[action.payload - 1].start({
@@ -61,8 +67,8 @@ const KenoList: React.FC = () => {
   }, [refs]);
 
   useChain(
-    refs,
-    refs.map((x, idx) => idx),
+    refsToAnimate,
+    refsToAnimate.map((x, idx) => idx),
     50
   );
 

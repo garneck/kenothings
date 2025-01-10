@@ -1,11 +1,5 @@
 import styled from "styled-components";
-import { useEffect } from "react";
-import {
-  useSpring,
-  animated,
-  SpringValues,
-  SpringRef,
-} from "@react-spring/web";
+import { useSpring, animated, SpringRef } from "@react-spring/web";
 
 import { getBackground } from "@/components/keno/list/utils";
 import { toggleValue } from "@/pages/keno/drawSlice";
@@ -29,6 +23,7 @@ const ListItem: React.FC<ListItemProps> = ({ value, springRef }) => {
   const [style] = useSpring(() => ({
     ref: springRef,
     from: { backgroundImage: getBackground("default") },
+    onStart: (x) => console.log(x),
   }));
 
   const handleClick = (): void => {
