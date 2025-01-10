@@ -17,6 +17,7 @@ const RootLayout = ({
         alt="background"
         width={0}
         height={0}
+        priority
       />
       <Layout>{children}</Layout>
     </ThemeProvider>
