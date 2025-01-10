@@ -25,13 +25,20 @@ const getBackground = (variant: KenoVariant): string => {
   }
 };
 
+const riskToWinVariantMap: Record<"low" | "medium" | "high", KenoVariant> = {
+  low: "win",
+  medium: "win_medium",
+  high: "win_hard",
+};
+
 const getVariant = (
   currentValue: number,
   selectedValues: number[],
-  winningValues: number[]
+  winningValues: number[],
+  risk: "low" | "medium" | "high"
 ): KenoVariant => {
   if (winningValues.length > 0 && winningValues.includes(currentValue)) {
-    if (selectedValues.includes(currentValue)) return "win";
+    if (selectedValues.includes(currentValue)) return riskToWinVariantMap[risk];
     return "loss";
   }
   if (selectedValues.includes(currentValue)) return "highlighted";

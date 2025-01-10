@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
-import { isAnyOf } from "@reduxjs/toolkit";
 
-import { startAppListening } from "@/lib/store";
-import { generate, clear } from "@/pages/keno/drawSlice";
 import { useAppSelector } from "@/lib/hooks";
 
 type Stake = {
@@ -28,12 +24,7 @@ const defaultStakes: Array<Omit<Stake, "selected">> = [
   { label: "1000x", hitAmount: 10, multiplier: 1000 },
 ];
 
-const Result: React.FC<Stake> = ({
-  label,
-  hitAmount,
-  multiplier,
-  selected = false,
-}) => (
+const Result: React.FC<Stake> = ({ label, hitAmount, selected = false }) => (
   <ResultContainer selected={selected}>
     <ResultMultiplier>{label}</ResultMultiplier>
     <ResultHitAmount>

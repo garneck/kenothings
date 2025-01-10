@@ -9,8 +9,9 @@ const KenoList: React.FC = () => {
   const allValues = useAppSelector((state) => state.draw.allValues);
   const selectedValues = useAppSelector((state) => state.draw.selectedValues);
   const winningValues = useAppSelector((state) => state.draw.value);
+  const risk = useAppSelector((state) => state.draw.risk);
 
-  const { refs } = useAnimations(winningValues, selectedValues);
+  const { refs } = useAnimations(winningValues, selectedValues, risk);
 
   return (
     <KenoListContainer>

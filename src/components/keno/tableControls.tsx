@@ -47,7 +47,7 @@ const Dice = styled(Image)`
 
 const TableControlsButton = styled.button`
   cursor: pointer;
-  padding: 24px;
+  padding: 16px 24px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Image from "next/image";
 import React from "react";
 
@@ -29,7 +29,7 @@ const RiskControls: React.FC = () => {
         <FireWrapper>
           <FireImage />
         </FireWrapper>
-        <div>low</div>
+        <RiskSelectorLabel>low</RiskSelectorLabel>
       </RiskSelector>
       <RiskSelector
         risk="medium"
@@ -40,7 +40,7 @@ const RiskControls: React.FC = () => {
           <FireImage />
           <FireImage />
         </FireWrapper>
-        <div>medium</div>
+        <RiskSelectorLabel>medium</RiskSelectorLabel>
       </RiskSelector>
       <RiskSelector
         risk="high"
@@ -52,7 +52,7 @@ const RiskControls: React.FC = () => {
           <FireImage />
           <FireImage />
         </FireWrapper>
-        <div>high</div>
+        <RiskSelectorLabel>high</RiskSelectorLabel>
       </RiskSelector>
     </RiskContainer>
   );
@@ -63,8 +63,8 @@ const RiskContainer = styled.div`
   width: 100%;
   flex-flow: column nowrap;
   align-items: stretch;
+  justify-content: center;
   padding: 0;
-  gap: 8px;
 `;
 
 const RiskSelectorTitle = styled.div`
@@ -72,6 +72,13 @@ const RiskSelectorTitle = styled.div`
   align-self: center;
   color: #8392aa;
   font-size: 12px;
+`;
+
+const RiskSelectorLabel = styled.div``;
+
+const FireWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 interface RiskSelectorProps {
@@ -87,19 +94,28 @@ const RiskSelector = styled.button<RiskSelectorProps>`
   text-transform: capitalize;
   cursor: pointer;
   user-select: none;
+  padding: 12px 24px;
 
   background: transparent;
-  background-image: ${(props) => props.theme.buttonBackgrounds.risk};
+  & ${RiskSelectorLabel} {
+    color: ${(props) => (props.active ? "#fff" : "#8392aa")};
+  }
+  & ${FireWrapper} {
+    ${(props) =>
+      props.active &&
+      css`
+        filter: brightness(0) invert(1);
+      `}
+  }
+  background-image: ${(props) =>
+    props.active
+      ? props.theme.buttonBackgrounds.risk[props.risk]
+      : props.theme.buttonBackgrounds.risk.base};
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   border: none;
   outline: none;
-`;
-
-const FireWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
 `;
 
 export default RiskControls;

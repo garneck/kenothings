@@ -1,14 +1,32 @@
 import { useEffect, useState } from "react";
-import { isAnyOf } from "@reduxjs/toolkit";
 import { SpringRef, useChain } from "@react-spring/web";
 
 import { startAppListening } from "@/lib/store";
 import { generate, toggleValue, autoPick, clear } from "@/pages/keno/drawSlice";
 import { getVariant, getBackground } from "./utils";
+import type { KenoVariant } from "./utils";
+
+const updateBackground = (ref: SpringRef, variant: KenoVariant): SpringRef => {
+  ref.update({
+    to: {
+      backgroundImage: getBackground(variant),
+    },
+  });
+  return ref;
+};
+
+const getUniqueSubsetOfRefs = (
+  allRefs: SpringRef[],
+  values: number[]
+): SpringRef[] =>
+  Array.from(new Set(values))
+    .sort((a, b) => a - b)
+    .map((id) => allRefs[id - 1]);
 
 const useAnimations = (
   winningValues: number[],
-  selectedValues: number[]
+  selectedValues: number[],
+  risk: "low" | "medium" | "high"
 ): { refs: SpringRef[] } => {
   const [refs, setRefs] = useState(
     Array.from({ length: 40 }, () => SpringRef())
@@ -22,28 +40,24 @@ const useAnimations = (
         const newValues = listenerApi.getState().draw.value;
         const newSelectedValues = listenerApi.getState().draw.selectedValues;
         setRefs(
-          refs.map((ref, idx) => {
-            ref.update({
-              to: {
-                backgroundImage: getBackground(
-                  getVariant(idx + 1, newSelectedValues, newValues)
-                ),
-              },
-            });
-            return ref;
-          })
+          refs.map((ref, idx) =>
+            updateBackground(
+              ref,
+              getVariant(idx + 1, newSelectedValues, newValues, risk)
+            )
+          )
         );
         setRefsToAnimate(
-          Array.from(
-            new Set([...winningValues, ...newValues, ...newSelectedValues])
-          )
-            .sort((a, b) => a - b)
-            .map((id) => refs[id - 1])
+          getUniqueSubsetOfRefs(refs, [
+            ...winningValues,
+            ...newValues,
+            ...newSelectedValues,
+          ])
         );
       },
     });
     return () => unsubscribe();
-  }, [refs, winningValues]);
+  }, [refs, winningValues, risk]);
 
   useEffect(() => {
     const unsubscribe = startAppListening({
@@ -51,26 +65,20 @@ const useAnimations = (
       effect: (action, listenerApi) => {
         const newSelectedValues = listenerApi.getState().draw.selectedValues;
         setRefs(
-          refs.map((ref, idx) => {
-            ref.update({
-              to: {
-                backgroundImage: getBackground(
-                  getVariant(idx + 1, newSelectedValues, winningValues)
-                ),
-              },
-            });
-            return ref;
-          })
+          refs.map((ref, idx) =>
+            updateBackground(
+              ref,
+              getVariant(idx + 1, newSelectedValues, winningValues, risk)
+            )
+          )
         );
         setRefsToAnimate(
-          Array.from(new Set([...selectedValues, ...newSelectedValues]))
-            .sort((a, b) => a - b)
-            .map((id) => refs[id - 1])
+          getUniqueSubsetOfRefs(refs, [...selectedValues, ...newSelectedValues])
         );
       },
     });
     return () => unsubscribe();
-  }, [refs, winningValues, selectedValues]);
+  }, [refs, winningValues, selectedValues, risk]);
 
   useEffect(() => {
     const unsubscribe = startAppListening({
@@ -79,54 +87,39 @@ const useAnimations = (
         const newValues = listenerApi.getState().draw.value;
         const newSelectedValues = listenerApi.getState().draw.selectedValues;
         setRefs(
-          refs.map((ref, idx) => {
-            ref.update({
-              to: {
-                backgroundImage: getBackground(
-                  getVariant(idx + 1, newSelectedValues, newValues)
-                ),
-              },
-            });
-            return ref;
-          })
+          refs.map((ref, idx) =>
+            updateBackground(
+              ref,
+              getVariant(idx + 1, newSelectedValues, newValues, risk)
+            )
+          )
         );
         setRefsToAnimate(
-          Array.from(
-            new Set([...winningValues, ...newValues, ...newSelectedValues])
-          )
-            .sort((a, b) => a - b)
-            .map((id) => refs[id - 1])
+          getUniqueSubsetOfRefs(refs, [
+            ...winningValues,
+            ...newValues,
+            ...newSelectedValues,
+          ])
         );
       },
     });
     return () => unsubscribe();
-  }, [refs, winningValues]);
+  }, [refs, winningValues, risk]);
 
   useEffect(() => {
     const unsubscribe = startAppListening({
       actionCreator: clear,
       effect: () => {
         setRefs(
-          refs.map((ref, idx) => {
-            ref.update({
-              to: {
-                backgroundImage: getBackground(
-                  getVariant(idx + 1, [], winningValues)
-                ),
-              },
-            });
-            return ref;
-          })
+          refs.map((ref, idx) =>
+            updateBackground(ref, getVariant(idx + 1, [], winningValues, risk))
+          )
         );
-        setRefsToAnimate(
-          Array.from(new Set([...selectedValues]))
-            .sort((a, b) => a - b)
-            .map((id) => refs[id - 1])
-        );
+        setRefsToAnimate(getUniqueSubsetOfRefs(refs, [...selectedValues]));
       },
     });
     return () => unsubscribe();
-  }, [refs, selectedValues, winningValues]);
+  }, [refs, selectedValues, winningValues, risk]);
 
   useEffect(() => {
     const unsubscribe = startAppListening({
@@ -138,7 +131,8 @@ const useAnimations = (
               getVariant(
                 action.payload,
                 listenerApi.getState().draw.selectedValues,
-                listenerApi.getState().draw.value
+                listenerApi.getState().draw.value,
+                risk
               )
             ),
           },
@@ -147,7 +141,7 @@ const useAnimations = (
       },
     });
     return () => unsubscribe();
-  }, [refs]);
+  }, [refs, risk]);
 
   useChain(
     refsToAnimate,
